@@ -21,11 +21,11 @@ Our approach involves two datasets which we found online from a quick Google sea
 
 The other dataset we will be using today is the American Community Survey (ACS) 5-Year Estimates, produced by the U.S. Census Bureau. The ACS is produced by the U.S. Census Bureau, another federal agency, and is fully in the public domain with no licensing restrictions on use. The data we will be using is reported at the county level, meaning no individually identifiable information is present, making it not a concern ethically. We use the 2019–2023 5-Year Estimates at the county level, specifically looking at metrics in DP03, the Selected Economics Characteristics table of the ACS Estimates. We specifically decided to use the 5-year estimates rather than the 1-year estimates due to the fact that the 1-year data covers counties with populations of 65,000 or more, which would exclude a large share of U.S. counties, creating bias towards largely populated areas. 
 
-## Timeline
-
-
 
 From the DP03 table, we are able to find important socioeconomic variables including median household income, unemployment rate, poverty rate, and health coverage. These variables provide the demographic and economic context that the IMLS dataset alone cannot offer. While the PLS does tell us how much libraries are being used, the ACS expands on the former by explaining why usage varies across communities. Both datasets share the FIPS county code as a common geographic identifier, which allows us to merge them at the county level and construct a single unified dataset for analysis.
 
 - **Source:** https://data.census.gov/table/ACSDP5Y2023.DP03?q=DP03&g=010XX00US$0500000
 - **License:** U.S. federal government public domain; no restrictions on use
+
+## Timeline
+
