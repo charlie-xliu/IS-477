@@ -39,20 +39,34 @@ From the DP03 table, we are able to find important socioeconomic variables inclu
 ## Timeline
 
 _February 17th:_ Team creation
+
 _March 9th:_ Started work on Step 2: Project Plan
+
 _March 12th:_ (Current): Submission of Step 2: Project Plan
+
 _March 14th - 24th:_ (Spring Break): Data Acquisition & Merging, download and inspect both datasets. Confirm you can merge datasets using the FIPS county code.
-_March 24th - 27th:_ Data Cleaning & Preprocessing. Handle missing values, normalize columns, merge PLS and ACS on FIPS code, determine which columns are relevant (there are a lot of columns to sort through.)
-_March 27th - 30th:_ Some Exploratory Data Analysis, Summary statistics, check distributions of library usage metrics. See if there’s any skewness, outliers, or anything else unusual. Generate a correlation matrix between socioeconomic predictors (such as poverty rate, median household income…) and library usage variables
-_March 30th:_ Begin write-up of Step 3: Interim Status Report
+
+_March 24th - 27th:_ Data Cleaning & Preprocessing. Handle missing values, normalize columns, merge PLS and ACS on FIPS code, determine which columns are relevant (there are a lot of columns to sort through).
+
+_March 27th - 30th:_ Some Exploratory Data Analysis, Summary statistics, check distributions of library usage metrics. See if there’s any skewness, outliers, or anything else unusual. Generate a correlation matrix between socioeconomic predictors (such as poverty rate, median household income…) and library usage variables.
+
+_March 30th:_ Begin write-up of Step 3: Interim Status Report.
+
 _March 31st:_ Confirmation that Step 3: Interim status report is complete, finish any gaps in the write-up.
-_April 1st - 6th:_ Feature engineering, converting data into per-capita basis
+
+_April 1st - 6th:_ Feature engineering, converting data into per-capita basis.
+
 _April 7th - 12th:_ Data quality documentation, documentation of reproducibility, how it is organized (this is for use in the final project), Metadata and data documentation. 
-_April 13th - 17th:_ Data modeling and reproducibility: linear regression, creating a conceptual model (ER)
-_April 18th - 23rd:_ Visualization & Interpretation: Finalize charts, maps, plots; start interpreting model outputs
+
+_April 13th - 17th:_ Data modeling and reproducibility: linear regression, creating a conceptual model (ER).
+
+_April 18th - 23rd:_ Visualization & Interpretation: Finalize charts, maps, plots; start interpreting model outputs.
+
 _April 24th - 27th:_ Workflow automation and provenance. Snakemake workflow automating from acquisition to result.
-_April 28th - April 30th:_ Review deliverables, ensure we are fulfilling are requirements of the assignment
-_May 1st - May 3rd:_ Final Project write-up: Assemble all individual parts of project and create a report that summarizes all work accomplished
+
+_April 28th - April 30th:_ Review deliverables, ensure we are fulfilling are requirements of the assignment.
+
+_May 1st - May 3rd:_ Final Project write-up: Assemble all individual parts of project and create a report that summarizes all work accomplished.
 
 ## Constraints:
 - The ACS dataset is from 2019-2023 while the IMLS is only from September 2022 to October 2023
