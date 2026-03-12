@@ -2,11 +2,14 @@
 
 The goal of this project is to analyze how local demographic and socioeconomic factors influence public library usage across the United States. We were drawn to the idea of libraries as they were an influential part of our childhood and teenage years, and continue to serve as important community resources. Furthermore, they can serve as a place of knowledge, collaboration, and cultural gatherings, making them critical for a thriving community. However, library usage varies widely by region, and understanding the drivers of engagement can help decision makers (such as policy makers) understand more about how to support their local neighborhood.
 
+Using the U.S. Census Bureau’s 5-year ACS Dataset and the IMLS’ public library usage survey, we will conduct an analysis that will explore how socioeconomic characteristics such as poverty, unemployment rate, and median household income relate to per-capita library usage. We will then identify which factors are the strongest predictors, and examine whether these relationships differ across regions. We will use exploratory data analysis, visualization, and modeling to convey patterns and create conclusions. Ultimately, we hope this work contributes to a better understanding of who libraries serve and which communities need more investment.
+
+
 ## Team
 As a team, we expect to have equal amounts of collaboration on assignments and projects. This means that we need to have consistent communication so we are on the same page. We will both keep each other responsible because for a lot of the parts, we must build off of what the other team member did (data analysis can’t happen before the cleaning). We will probably have member roles in finding, cleaning, and analyzing datasets along with identifying their ethical sourcing. Eventually we will also have to have someone work on the automated workflow, make sure it is reproducible and that someone is documenting it. 
 
 ## Research Questions
-Our guiding question: How well do local demographic and socioeconomic characteristics predict public library usage rates across U.S. counties, and which factors are the strongest predictors? Specifically, we will examine:
+***Our guiding question:*** How well do local demographic and socioeconomic characteristics predict public library usage rates across U.S. counties, and which factors are the strongest predictors? Specifically, we will examine:
 - Do counties with higher poverty rates have higher per-capita library usage, suggesting libraries serve as an essential resource for economically disadvantaged communities?
 - Are counties with higher unemployment rates associated with greater library engagement, due to the increased usage of library resources for job searching and digital access?
 - How does median household income relate to library usage, and what kind of pattern does it follow?
@@ -33,12 +36,27 @@ From the DP03 table, we are able to find important socioeconomic variables inclu
 
 ## Timeline
 
+_February 17th:_ Team creation
+_March 9th:_ Started work on Step 2: Project Plan
+_March 12th:_ (Current): Submission of Step 2: Project Plan
+_March 14th - 24th:_ (Spring Break): Data Acquisition & Merging, download and inspect both datasets. Confirm you can merge datasets using the FIPS county code.
+_March 24th - 27th:_ Data Cleaning & Preprocessing. Handle missing values, normalize columns, merge PLS and ACS on FIPS code, determine which columns are relevant (there are a lot of columns to sort through.)
+_March 27th - 30th:_ Some Exploratory Data Analysis, Summary statistics, check distributions of library usage metrics. See if there’s any skewness, outliers, or anything else unusual. Generate a correlation matrix between socioeconomic predictors (such as poverty rate, median household income…) and library usage variables
+_March 30th:_ Begin write-up of Step 3: Interim Status Report
+_March 31st:_ Confirmation that Step 3: Interim status report is complete, finish any gaps in the write-up.
+_April 1st - 6th:_ Feature engineering, converting data into per-capita basis
+_April 7th - 12th:_ Data quality documentation, documentation of reproducibility, how it is organized (this is for use in the final project), Metadata and data documentation. 
+_April 13th - 17th:_ Data modeling and reproducibility: linear regression, creating a conceptual model (ER)
+_April 18th - 23rd:_ Visualization & Interpretation: Finalize charts, maps, plots; start interpreting model outputs
+_April 24th - 27th:_ Workflow automation and provenance. Snakemake workflow automating from acquisition to result.
+_April 28th - April 30th:_ Review deliverables, ensure we are fulfilling are requirements of the assignment
+_May 1st - May 3rd:_ Final Project write-up: Assemble all individual parts of project and create a report that summarizes all work accomplished
 
-Constraints:
+## Constraints:
 - The ACS dataset is from 2019-2023 while the IMLS is only from September 2022 to October 2023
 - There are many confounding variables that we should keep in mind during our analysis
 
-Gaps
+## Gaps
 - We don’t have many confounding variables so our analysis could be off from that
 - There will not be an even representation of all the counties, this could lead to bias for rural areas where the library structure is the weakest. 
 
