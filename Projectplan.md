@@ -3,10 +3,14 @@
 The goal of this project is to analyze how local demographic and socioeconomic factors influence public library usage across the United States. We were drawn to the idea of libraries as they were an influential part of our childhood and teenage years, and continue to serve as important community resources. Furthermore, they can serve as a place of knowledge, collaboration, and cultural gatherings, making them critical for a thriving community. However, library usage varies widely by region, and understanding the drivers of engagement can help decision makers (such as policy makers) understand more about how to support their local neighborhood.
 
 ## Team
-
+As a team, we expect to have equal amounts of collaboration on assignments and projects. This means that we need to have consistent communication so we are on the same page. We will both keep each other responsible because for a lot of the parts, we must build off of what the other team member did (data analysis can’t happen before the cleaning). We will probably have member roles in finding, cleaning, and analyzing datasets along with identifying their ethical sourcing. Eventually we will also have to have someone work on the automated workflow, make sure it is reproducible and that someone is documenting it. 
 
 ## Research Questions
-
+Our guiding question: How well do local demographic and socioeconomic characteristics predict public library usage rates across U.S. counties, and which factors are the strongest predictors? Specifically, we will examine:
+- Do counties with higher poverty rates have higher per-capita library usage, suggesting libraries serve as an essential resource for economically disadvantaged communities?
+- Are counties with higher unemployment rates associated with greater library engagement, due to the increased usage of library resources for job searching and digital access?
+- How does median household income relate to library usage, and what kind of pattern does it follow?
+- Finally, do the questions above differ depending on rural or urban settings?
 
 ## Datasets
 
@@ -28,4 +32,12 @@ From the DP03 table, we are able to find important socioeconomic variables inclu
 - **License:** U.S. federal government public domain; no restrictions on use
 
 ## Timeline
+
+
+Constraints:
+- The ACS dataset is from 2019-2023 while the IMLS is only from September 2022 to October 2023
+- There are many confounding variables that we should keep in mind during our analysis
+Gaps
+- We don’t have many confounding variables so our analysis could be off from that
+- There will not be an even representation of all the counties, this could lead to bias for rural areas where the library structure is the weakest. 
 
