@@ -37,6 +37,7 @@ From the DP03 table, we are able to find important socioeconomic variables inclu
 Constraints:
 - The ACS dataset is from 2019-2023 while the IMLS is only from September 2022 to October 2023
 - There are many confounding variables that we should keep in mind during our analysis
+
 Gaps
 - We don’t have many confounding variables so our analysis could be off from that
 - There will not be an even representation of all the counties, this could lead to bias for rural areas where the library structure is the weakest. 
