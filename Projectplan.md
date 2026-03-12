@@ -1,3 +1,5 @@
+# IS477 Project Plan - Charlie Liu and Vincent Cui
+
 ## Overview
 
 The goal of this project is to analyze how local demographic and socioeconomic factors influence public library usage across the United States. We were drawn to the idea of libraries as they were an influential part of our childhood and teenage years, and continue to serve as important community resources. Furthermore, they can serve as a place of knowledge, collaboration, and cultural gatherings, making them critical for a thriving community. However, library usage varies widely by region, and understanding the drivers of engagement can help decision makers (such as policy makers) understand more about how to support their local neighborhood.
