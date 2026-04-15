@@ -40,11 +40,13 @@ Currently, there have been no changes to the project plan. We have finished ever
 
 ## 4. Project Challenges
 
-*(To be completed)*
-
+The most significant challenge was geographic merging. PLS libraries are identified by their legal service area while ACS data is organized strictly at the county level. To bridge this, we derived 5-digit county FIPS codes from PLS using a two-step fallback: direct extraction for libraries whose service area is a county, and census tract centroids for all others. Libraries spanning multiple counties were assigned to just one, which is a known simplification.
+Data quality in the PLS also required attention. The survey encodes non-response with multiple sentinel values (-1, -3, -9), and some records contained implausible values that survived initial filtering. Winsorization at the 1st and 99th percentiles addressed the worst cases, though a stricter threshold may be needed during modeling.
+Finally, there is a temporal mismatch between the sources: the PLS reflects FY2022–23 activity while the ACS 5-year estimates average 2019–2023 data, meaning our socioeconomic predictors partially reflect pre-pandemic conditions.
 
 ## 5. Team Member Summary
 
 - **Vincent:** Brainstormed ideas on how to clean and merge the dataset, conducted exploratory analysis including exploring the relationship between local government revenue, library attendance, and median household income. Drafted most of the status report in the markdown file, summarizing work done between both team members.
 
-- **Charlie:** *(To be completed)*
+- **Charlie:** I handled data cleaning and merging. This involved removing PLS sentinel values (-1, -3, -9), selecting relevant columns from both the 550-column ACS table and 187-column PLS file, and constructing a shared county FIPS key to join the two datasets. For libraries not directly mapped to a county, census tract centroids served as a geographic fallback. The resulting merged dataset formed the foundation for all subsequent analysis.
+
