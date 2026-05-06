@@ -68,8 +68,18 @@ Variables selected for analysis include:
 These variables collectively represent multiple dimensions of economic wellbeing that may influence residents' patterns of library use.
 The ACS is a public federal dataset with no restrictions on use. Margin-of-error columns (suffix 'M') were retained in the raw file but were dropped from the analytical subset to simplify the dataset; for inference on small counties, these should be restored to implement uncertainty-aware modeling.
 The ACS DP03 data file includes a non-data header row (row index 1 contains human-readable column labels rather than data values), which must be skipped during loading to avoid type coercion errors.
+
 ### Relationship Between Datasets
 The two datasets are linked at the county level using 5-digit FIPS codes. Because library service areas do not always align with county boundaries, constructing this key required a two-step geographic fallback strategy described in detail in the Data Cleaning section. The merged dataset enables direct comparison of library agency-level metrics with the socioeconomic characteristics of the surrounding county population.
+
+### Ethical and Legal Constraints
+Both datasets used in this analysis are public federal datasets with no legal restrictions on use, redistribution, or publication of derived results. Neither requires a data use agreement or licensing arrangement to access or analyze.
+
+The PLS is released as public-use microdata by the Institute of Museum and Library Services. From what we can see, no personally identifiable information is present in the agency-level file. The one confidentiality-adjacent feature of the PLS is the use of the sentinel value `-3` to mark cells that have been suppressed to protect the confidentiality of small libraries or specific reporting situations. These suppressed values were treated as missing data in our analysis rather than excluded entirely, because they represent genuine non-response rather than inapplicable fields.
+
+The ACS is produced by the U.S. Census Bureau and is similarly unrestricted for research and publication use. At the county level of aggregation used here, no individual-level data is present. The ACS does publish margins of error alongside all estimates, which implicitly acknowledges the sampling uncertainty inherent in the survey design. This is particularly notable for small-population counties where few survey respondents may represent the full county population. We did not incorporate these margins of error into the analysis, which is a methodological limitation rather than an ethical one. However, it is worth noting that conclusions drawn about small counties should be interpreted with more caution than those for large, well-sampled ones.
+
+Ultimately, both datasets are county-level aggregates, meaning all predictors and outcomes describe county populations rather than individual library users. Statements like "counties with higher poverty rates have fewer library visits" describe aggregate relationships and cannot be interpreted as claims about the behavior of impoverished individuals specifically. Drawing individual-level conclusions from county-level data is a well-known methodological pitfall, and any application of these findings to policy or program design should be careful not to mix up county-level patterns with individual behavior.
 
 ## Data Quality
 
