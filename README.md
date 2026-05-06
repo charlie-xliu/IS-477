@@ -2,7 +2,7 @@
  
 ## Contributors
  
-- Charlie Liu (charlie-xliu)
+- Charlie Liu
 - Vincent Cui
 ---
  
