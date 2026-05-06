@@ -121,7 +121,69 @@ Scale heterogeneity was a persistent challenge throughout the analysis. Library 
 Temporal alignment between the two data sources cannot be fully resolved given the available data. The five-year ACS averaging period means that the socioeconomic conditions reflected in the predictor variables are a blend of pre-pandemic, pandemic-era, and post-pandemic conditions, while the FY2023 PLS reflects a single fiscal year. This is a standard challenge in cross-sectional social science research using ACS data, but it limits causal interpretation of the findings.
 
 ## Reproducing
-To reproduce the full analysis from scratch, follow these steps:
+
+There are two ways to reproduce the full analysis from scratch.
+
+### Option A — Snakemake (Recommended)
+
+Snakemake automates the complete end-to-end pipeline from raw data validation through cleaning, EDA, feature engineering, modeling, and figure generation.
+
+1. **Clone the repository:**
+   ```
+   git clone https://github.com/charlie-xliu/IS-477.git
+   cd IS-477
+   ```
+
+2. **Obtain the raw data files** and place them in `raw/`:
+   - `PLS_FY23_AE_pud23i.csv` — download from https://www.imls.gov/research-evaluation/data-collection/public-libraries-survey
+   - `pls_fy23_outlet_pud23i.csv` — same source
+   - `ACSDP5Y2023.DP03-Data.csv` — download from https://data.census.gov (Table DP03, ACS 5-Year 2023, All Counties)
+   - `ACSDP5Y2023.DP03-Column-Metadata.csv` — downloaded alongside the DP03 data table
+
+   To verify file integrity, confirm the SHA-256 checksums match the following:
+   ```
+   raw/PLS_FY23_AE_pud23i.csv:              3e2a498c116e4a6a067c89fcbc3d73d99bca3adb3e832e861fbedb48c2306b6a
+   raw/pls_fy23_outlet_pud23i.csv:           2b4aad2fb91b0d29eaa51d0c0a1f934779f19c382247551a563df0540954fb68
+   raw/ACSDP5Y2023.DP03-Data.csv:            6ebfc17ced4026d2ba266ae59b63232d0759b56d3d6af3e9ef67b284c692fd91
+   raw/ACSDP5Y2023.DP03-Column-Metadata.csv: b8e425f7e5651eb7d4a48de21d7efad7a50fe41c51b0b104e9832d3e1ef8a16d
+   ```
+   You can verify by running `python scripts/acquire.py` from the project root.
+
+3. **Install dependencies:**
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. **Install Snakemake** (if not already installed):
+   ```
+   pip install snakemake
+   ```
+   Verify the installation by running:
+   ```
+   snakemake --version
+   ```
+
+5. **Run the full pipeline:**
+   ```
+   snakemake --cores 1
+   ```
+   Snakemake will execute the following steps in order:
+   - `acquire_data` — validates raw data files and computes SHA-256 checksums
+   - `clean_and_merge` — removes sentinel values, selects columns, merges PLS × ACS on county FIPS
+   - `eda` — generates correlation heatmap, scatter plots, and distribution figures
+   - `feature_engineering` — creates per-capita metrics, log transforms, Winsorization, and derived ratios
+   - `modeling` — fits OLS regression, produces coefficient plot and locale comparison figure
+
+6. **Verify outputs** — all files will be written to `processed/` and `figures/`. Run `snakemake --cores 1` a second time — if it prints "Nothing to be done", all outputs are present and up to date.
+
+To preview the pipeline without executing:
+```
+snakemake --cores 1 --dry-run
+```
+
+### Option B — Jupyter Notebook
+
+To reproduce using 'library_analysis.ipynb', follow these steps:
 1. **Clone the repository** from `charlie-xliu/IS-477` on GitHub.
 2. **Obtain the raw data files** and place them in `data/raw/`:
    - `PLS_FY23_AE_pud23i.csv` — download from the IMLS Public Library Survey FY2023 page at https://www.imls.gov/research-evaluation/data-collection/public-libraries-survey
