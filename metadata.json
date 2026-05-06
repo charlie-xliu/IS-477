@@ -1,0 +1,99 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  "name": "Public Library Usage and Socioeconomic Conditions: A County-Level Analysis",
+  "description": "Merged dataset integrating IMLS Public Library Survey (PLS) FY2023 agency-level microdata with U.S. Census Bureau American Community Survey (ACS) 5-Year Estimates 2023 (Table DP03) at the county level. Includes cleaned, merged, and feature-engineered outputs linking library usage metrics (visits, circulation, programs, staffing, expenditures) with county-level socioeconomic indicators (poverty rate, median household income, unemployment, SNAP participation). Produced as part of IS477 at the University of Illinois Urbana-Champaign.",
+  "url": "https://github.com/charlie-xliu/IS-477",
+  "identifier": "https://github.com/charlie-xliu/IS-477",
+  "creator": [
+    {
+      "@type": "Person",
+      "name": "Charlie Liu",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Illinois Urbana-Champaign"
+      }
+    },
+    {
+      "@type": "Person",
+      "name": "Vincent Cui",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Illinois Urbana-Champaign"
+      }
+    }
+  ],
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "datePublished": "2025",
+  "inLanguage": "en",
+  "keywords": [
+    "public libraries",
+    "socioeconomic indicators",
+    "poverty",
+    "library usage",
+    "ACS",
+    "Public Library Survey",
+    "IMLS",
+    "county-level",
+    "FIPS",
+    "data integration"
+  ],
+  "spatialCoverage": {
+    "@type": "Place",
+    "name": "United States"
+  },
+  "temporalCoverage": "2019/2023",
+  "variableMeasured": [
+    {"@type": "PropertyValue", "name": "visits_pc", "description": "Annual library visits per capita"},
+    {"@type": "PropertyValue", "name": "circ_pc", "description": "Annual circulation per capita"},
+    {"@type": "PropertyValue", "name": "opex_pc", "description": "Operating expenditures per capita (USD)"},
+    {"@type": "PropertyValue", "name": "poverty_rate_all_pct", "description": "Percentage of all people below the federal poverty line (ACS DP03)"},
+    {"@type": "PropertyValue", "name": "median_hh_income", "description": "Median household income in USD (ACS DP03)"},
+    {"@type": "PropertyValue", "name": "unemployment_rate_pct", "description": "Civilian labor force unemployment rate (ACS DP03)"},
+    {"@type": "PropertyValue", "name": "snap_pct", "description": "Percentage of households receiving SNAP benefits (ACS DP03)"},
+    {"@type": "PropertyValue", "name": "no_health_insurance_pct", "description": "Percentage of population without health insurance (ACS DP03)"},
+    {"@type": "PropertyValue", "name": "work_from_home_pct", "description": "Percentage of workers who work from home (ACS DP03)"}
+  ],
+  "isBasedOn": [
+    {
+      "@type": "Dataset",
+      "name": "Public Library Survey FY2023 Agency-Level Microdata",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Institute of Museum and Library Services (IMLS)"
+      },
+      "url": "https://www.imls.gov/research-evaluation/data-collection/public-libraries-survey",
+      "license": "https://www.usa.gov/government-works"
+    },
+    {
+      "@type": "Dataset",
+      "name": "American Community Survey 5-Year Estimates 2023, Table DP03",
+      "publisher": {
+        "@type": "Organization",
+        "name": "U.S. Census Bureau"
+      },
+      "url": "https://data.census.gov",
+      "license": "https://www.usa.gov/government-works"
+    }
+  ],
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "name": "Merged PLS-ACS Dataset",
+      "encodingFormat": "text/csv",
+      "contentUrl": "https://github.com/charlie-xliu/IS-477/blob/main/data/processed/merged_pls_acs.csv"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Feature-Engineered Dataset",
+      "encodingFormat": "text/csv",
+      "contentUrl": "https://github.com/charlie-xliu/IS-477/blob/main/data/processed/features_pls_acs.csv"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Data Dictionary",
+      "encodingFormat": "text/csv",
+      "contentUrl": "https://github.com/charlie-xliu/IS-477/blob/main/docs/data_dictionary.csv"
+    }
+  ]
+}
