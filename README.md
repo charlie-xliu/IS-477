@@ -48,6 +48,7 @@ Geographic linkage variables include:
 - 
 The dataset is released as public-use microdata by IMLS and is freely available for download. There are no known legal constraints on redistribution or analysis. The unit of analysis is the library administrative entity; outlet-level data (branches, bookmobiles) are available in a companion file (pls_fy23_outlet_pud23i.csv) but were not used directly in this analysis.
 An important ethical consideration is that the PLS includes several sentinel values (-1 for not applicable, -3 for confidential/suppressed, -9 for missing/not reported) which must be treated as missing data rather than as numeric values. Failing to handle these sentinels would introduce severe distortions into any quantitative analysis.
+
 ### Dataset 2: American Community Survey (ACS) 5-Year Estimates 2023, Table DP03
 **Location in repository:** `data/raw/ACSDP5Y2023_DP03-Data.csv` and `data/raw/ACSDP5Y2023_DP03-Column-Metadata.csv`
 The ACS DP03 table provides selected economic characteristics at the county level for all counties in the United States. The 5-year estimates pool survey responses from 2019 through 2023, providing more stable estimates for small geographic areas than single-year estimates. The raw data file contains one row per county (approximately 3,200 rows) and several hundred columns encoding estimates and margins of error for a range of employment, income, and poverty indicators.
@@ -84,31 +85,45 @@ Approximately 90% or more of PLS library agencies were successfully matched to a
 Outlier analysis using the IQR ×1.5 rule identified substantial proportions of statistical outliers across most usage metrics, which is expected given the extreme size range of public library systems in the United States. A single large urban library system (e.g., New York Public Library) can have visits and circulation orders of magnitude larger than a rural single-branch library. This motivates the per-capita normalization and Winsorization applied in the feature engineering phase.
 
 ## Data Cleaning
+
 ### Handling PLS Sentinel Values
 The first and most critical cleaning step was replacing the PLS sentinel values (-1, -3, -9) with NaN across all numeric columns. A list of 30 numeric columns was explicitly defined to scope this replacement, avoiding unintended modification of categorical or flag columns. The number of sentinel values replaced was tracked and logged for transparency.
+
 ### ACS Type Coercion
-ACS columns were imported as strings due to the presence of non-numeric suppression codes. Each selected socioeconomic column was converted to a numeric type using pd.to_numeric(errors='coerce'), which silently converts non-parseable values to NaN. This approach is robust to the varied suppression codes used across different ACS variables.
-Constructing the County FIPS Key for PLS
+ACS columns were imported as strings due to the presence of non-numeric suppression codes. Each selected socioeconomic column was converted to a numeric type using `pd.to_numeric(errors='coerce')`, which silently converts non-parseable values to NaN. This approach is robust to the varied suppression codes used across different ACS variables.
+
+### Constructing the County FIPS Key for PLS
 This was the most technically complex cleaning operation. The PLS records each library's legal service area (LSA) geography in two fields: LSAGEOTYPE (the type of geography) and LSAGEOID (the geographic identifier). When LSAGEOTYPE equals "COUNTY", the LSAGEOID can be zero-padded to five digits to directly obtain the county FIPS code. For libraries in other geographic types (primarily "PLACE"), no direct FIPS code is available. In these cases, the CENTRACT field — an 11-digit census tract FIPS code for the library's central outlet — was used, with the first five digits extracted as the county FIPS code.
 
-Libraries whose legal service area spans multiple counties (flagged by LSABOUND='Y') present an inherent limitation: they were assigned to a single county using this procedure, which does not fully capture the geographic footprint of multi-county systems.
+Libraries whose legal service area spans multiple counties (flagged by `LSABOUND='Y'`) present an inherent limitation: they were assigned to a single county using this procedure, which does not fully capture the geographic footprint of multi-county systems.
 
-The derived FIPS key from both methods was combined using a fillna strategy (prefer direct county match, fall back to tract-derived), and the result was merged with the ACS dataset using a left join on county_fips.
+The derived FIPS key from both methods was combined using a `fillna` strategy (prefer direct county match, fall back to tract-derived), and the result was merged with the ACS dataset using a left join on `county_fips`.
+
 ### Removing Implausible Records
-Libraries with missing or zero population in their legal service area (pop_lsa) were excluded from the working analytical dataset, as they cannot be meaningfully used in per-capita calculations. This filtering step reduced the dataset from the full merged count to the analytical subset used in EDA and modeling.
+Libraries with missing or zero population in their legal service area (`pop_lsa`) were excluded from the working analytical dataset, as they cannot be meaningfully used in per-capita calculations. This filtering step reduced the dataset from the full merged count to the analytical subset used in EDA and modeling.
+
 ### Saving Cleaned Outputs
-Three intermediate CSV files were saved at the conclusion of the cleaning phase: pls_cleaned.csv (cleaned PLS data), acs_cleaned.csv (cleaned ACS subset), and merged_pls_acs.csv (the joined dataset). This makes a checkpoint between the cleaning and analysis phases and allows either dataset to be reused independently.
+Three intermediate CSV files were saved at the conclusion of the cleaning phase: `pls_cleaned.csv` (cleaned PLS data), `acs_cleaned.csv` (cleaned ACS subset), and `merged_pls_acs.csv` (the joined dataset). This makes a checkpoint between the cleaning and analysis phases and allows either dataset to be reused independently.
+
 ### Feature Engineering Transformations
-In the feature engineering phase, three additional cleaning-adjacent operations were performed. Per-capita metrics (visits_pc, circ_pc, opex_pc) were created by dividing raw usage and financial variables by pop_lsa, making libraries of different sizes directly comparable. Winsorization at 1% and 99% was applied to these per-capita metrics to limit the influence of extreme outliers and data entry errors that survived initial sentinel filtering. Finally, log transformations were applied to skewed usage variables for use in correlation analysis and regression modeling.
+In the feature engineering phase, three additional cleaning-adjacent operations were performed. Per-capita metrics (`visits_pc`, `circ_pc`, `opex_pc`) were created by dividing raw usage and financial variables by `pop_lsa`, making libraries of different sizes directly comparable. Winsorization at 1% and 99% was applied to these per-capita metrics to limit the influence of extreme outliers and data entry errors that survived initial sentinel filtering. Finally, log transformations were applied to skewed usage variables for use in correlation analysis and regression modeling.
 
 ## Findings
 ### Correlation Structure
-Spearman correlation analysis between log-transformed library usage metrics and socioeconomic predictors revealed a consistent pattern. Median household income and per-capita income showed positive correlations with visits, circulation, registered borrowers, and program attendance. Wealthier counties tend to have more heavily used libraries. Conversely, poverty rate, SNAP participation, and lack of health insurance showed negative correlations with the same usage metrics. Work-from-home rate showed a notably positive correlation with library digital metrics (Wi-Fi sessions, internet uses), suggesting that communities with more remote workers are also heavier library digital service users.
+Spearman correlation analysis between log-transformed library usage metrics and socioeconomic predictors revealed consistent patterns across the dataset (Figure fig_correlation_heatmap). Median household income and per-capita income showed the strongest positive correlations with visits, circulation, and program attendance. For example, total_programs versus median income reached r = 0.37, and total_circ versus per-capita income reached r = 0.35. Poverty rate, SNAP participation, and lack of health insurance showed negative correlations with the same metrics, suggesting economic disadvantage is associated with reduced library engagement rather than increased reliance on free public resources such as libraries.
+
+One interesting finding is the positive correlation between unemployment rate and visits (r = 0.24). This likely reflects the idea that high-unemployment counties tend to be larger and more urban, with better-funded library systems, rather than unemployed individuals visiting more. Work-from-home rate showed positive correlations with digital metrics. For example, Wi-Fi sessions (r = 0.15) and internet uses (r = 0.25) suggest remote-work communities are heavier users of library digital infrastructure. Figure fig_scatter_preview also highlights a key asymmetry: income's effect on visits (r = 0.32) are substantially larger than poverty's effect on circulation (r = −0.08), with income showing a clear upward trend across its full range while the poverty relationship is much flatter.
+
+### Funding, Scale, and the Visits Relationship
+Figure fig_funding_vs_usage also presents a log-log scatter of local government revenue against total annual visits, colored by median income. As you can see, the strongly positive relationship spans over six orders of magnitude. Notably, a secondary income effect persists within funding levels. At an equal government revenue, higher household income counties tend to have more visits. This suggests income influences library use through both a funding perspective and an independent demand perspective.
+
 ### OLS Regression Results
-The full national OLS model explained a meaningful share of variance in log per-capita visits. Among library-side variables, operating expenditure per capita was the strongest positive predictor, reinforcing the view that funding drives service intensity. Among socioeconomic variables, SNAP participation rate was the most statistically significant negative predictor: counties with higher proportions of households receiving food assistance had fewer library visits per capita, even after controlling for income and poverty rate. This may reflect that the most economically distressed communities face barriers to library access (transportation, hours of operation, competing time demands) that offset the potential demand for free resources.
-Median household income showed a positive and statistically significant coefficient, while unemployment rate and poverty rate showed coefficients in the expected negative direction but with weaker significance in the full national model.
+Standardized OLS coefficients are displayed in Figure fig_ols_coefficients. Operating expenditure per capita was the dominant positive predictor (β ≈ 0.47), roughly 2.5 times larger than any other variable, reinforcing that funding drives service intensity above all else. Staff per 1,000 population was second (β ≈ 0.19), capturing the important contribution of staffing to programming and repeat visits.
+
+Among negative predictors, SNAP participation rate showed the largest effect (β ≈ −0.19), outperforming poverty rate (β ≈ −0.08) and unemployment rate (β ≈ −0.08) in magnitude and significance even after controlling for income simultaneously. This points to access barriers such as transportation, time constraints, and competing demands — conditions that persist in the most economically distressed communities. One unexpected result is the negative coefficient on annual hours open (β ≈ −0.05), possibly an artifact of large multi-branch urban systems accumulating high aggregate hours while serving very large populations, suppressing their per-capita visit rate.
+
 ### Locale-Stratified Analysis
-When the regression was stratified by locale (rural, suburban, urban), the socioeconomic coefficients showed meaningful heterogeneity. Poverty rate had a larger negative association with visits in urban and suburban libraries than in rural ones. Median household income was positively associated with visits across all three locale types. These patterns suggest that library usage decisions are shaped differently depending on local geographic and demographic context, and that national-level models may mask important regional variation.
+Figure fig_locale_comparison reveals some meaningful differences when the model is categorized by locale. Poverty and unemployment both have stronger negative associations with visits in urban and suburban libraries than in rural ones, where neither effect is statistically distinguishable from zero. Median household income is a meaningful positive predictor in rural and suburban settings but has little explanatory power within urban libraries. Together, these results suggest that the drivers of library engagement are fundamentally different depending on where a library is located (rural vs. urban vs. suburban), and that national-level findings should not be applied as a blanket statement across all library types.
 
 ## Future Work
 There are several ways that we could improve this project with future work. The most immediate opportunity is to incorporate the quality flag columns from the PLS (e.g., F_VISITS, F_TOTCIR) into the analysis to assess whether imputed or revised values meaningfully affect model estimates. The PLS encodes multiple imputation codes that we retained in the cleaned output file but did not act on during modeling. A sensitivity analysis comparing results with and without flagged observations would strengthen confidence in the findings and make the analysis more transparent about where the underlying data is uncertain.
@@ -131,11 +146,9 @@ Finally, the outlet-level PLS file was acquired but not used in this analysis. B
 - Temporal alignment between the two data sources cannot be fully resolved given what is publicly available. The FY2023 PLS reflects a single fiscal year of library activity, while the ACS 5-year estimates average survey responses from 2019 through 2023. This means our socioeconomic predictors do not cleanly represent conditions at the same moment as our outcome variables, limiting the causal interpretability of the regression results. This is a standard challenge in cross-sectional social science research using ACS data, but it is worth being explicit about when interpreting the findings.
 
 ## Reproducing
-
 There are two ways to reproduce the full analysis from scratch.
 
 ### Option A — Snakemake (Recommended)
-
 Snakemake automates the complete end-to-end pipeline from raw data validation through cleaning, EDA, feature engineering, modeling, and figure generation.
 
 1. **Clone the repository:**
@@ -192,7 +205,6 @@ snakemake --cores 1 --dry-run
 ```
 
 ### Option B — Jupyter Notebook
-
 To reproduce using 'library_analysis.ipynb', follow these steps:
 1. **Clone the repository** from `charlie-xliu/IS-477` on GitHub.
 2. **Obtain the raw data files** and place them in `data/raw/`:
@@ -210,7 +222,6 @@ To reproduce using 'library_analysis.ipynb', follow these steps:
 
 
 ## References
- 
 - Institute of Museum and Library Services (IMLS). *Public Library Survey, FY2023: Agency-Level and Outlet-Level Public Use Data*. Washington, DC: IMLS, 2024. https://www.imls.gov/research-evaluation/data-collection/public-libraries-survey
 - U.S. Census Bureau. *American Community Survey 5-Year Estimates, 2019–2023, Table DP03: Selected Economic Characteristics*. Washington, DC: U.S. Census Bureau, 2024. https://data.census.gov
 - McKinney, W. (2010). Data structures for statistical computing in Python. *Proceedings of the 9th Python in Science Conference*, 445, 51–56.
