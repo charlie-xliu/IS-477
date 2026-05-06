@@ -5,7 +5,10 @@
 - Charlie Liu
 - Vincent Cui
 ---
- 
+
+## DOI
+https://zenodo.org/records/20059881
+
 ## Summary
 Public libraries serve as a cornerstone of community infrastructure, yet the factors that drive their usage are not understood. This project investigates the relationship between socioeconomic conditions and public library utilization across the United States by integrating two federal datasets: the Institute of Museum and Library Services (IMLS) Public Library Survey (PLS) for FY2023 and the U.S. Census Bureau's American Community Survey (ACS) 5-Year Estimates for 2019–2023.
 Our central research questions are:
